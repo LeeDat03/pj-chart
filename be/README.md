@@ -70,7 +70,7 @@ JWT_EXPIRE=7d
 JWT_COOKIE_EXPIRE=7
 
 # CORS Configuration
-FRONTEND_URL=http://localhost:3000
+FRONTEND_URL=http://localhost:3001
 ```
 
 **Important Security Notes:**
