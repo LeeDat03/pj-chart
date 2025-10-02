@@ -177,6 +177,11 @@ export default function Home() {
           isCompare={compareMode}
           currentWeekData={weeklyData.thisWeek.data}
           previousWeekData={weeklyData.prevWeek.data}
+          filterOptions={{
+            showPosRevenue,
+            showEatclubRevenue,
+            showLabourCosts,
+          }}
         />
 
         {/* Legend */}

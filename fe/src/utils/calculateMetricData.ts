@@ -37,22 +37,50 @@ export const calculatePercentageChange = (
 
 export const generateChartData = (
   currentWeekData: DailyMetric[],
-  previousWeekData: DailyMetric[]
+  previousWeekData: DailyMetric[],
+  options?: {
+    showPosRevenue?: boolean;
+    showEatclubRevenue?: boolean;
+    showLabourCosts?: boolean;
+  }
 ) => {
+  const {
+    showPosRevenue = true,
+    showEatclubRevenue = true,
+    showLabourCosts = true,
+  } = options || {};
+
+  const currWeekDateAfterNormalized = currentWeekData.map((item) => {
+    return {
+      ...item,
+      pos_revenue: showPosRevenue ? item.pos_revenue : 0,
+      eatclub_revenue: showEatclubRevenue ? item.eatclub_revenue : 0,
+      labour_cost: showLabourCosts ? item.labour_cost : 0,
+    };
+  });
+  const prevWeekDateAfterNormalized = previousWeekData.map((item) => {
+    return {
+      ...item,
+      pos_revenue: showPosRevenue ? item.pos_revenue : 0,
+      eatclub_revenue: showEatclubRevenue ? item.eatclub_revenue : 0,
+      labour_cost: showLabourCosts ? item.labour_cost : 0,
+    };
+  });
+
   const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   const dayIndexMap = [6, 0, 1, 2, 3, 4, 5];
 
   const currentMap = new Map<string, DailyMetric>();
   const previousMap = new Map<string, DailyMetric>();
 
-  currentWeekData.forEach((item) => {
+  currWeekDateAfterNormalized.forEach((item) => {
     const date = new Date(item.date);
     const dayIndex = dayIndexMap[date.getDay()];
     const dayName = daysOfWeek[dayIndex];
     currentMap.set(dayName, item);
   });
 
-  previousWeekData.forEach((item) => {
+  prevWeekDateAfterNormalized.forEach((item) => {
     const date = new Date(item.date);
     const dayIndex = dayIndexMap[date.getDay()];
     const dayName = daysOfWeek[dayIndex];

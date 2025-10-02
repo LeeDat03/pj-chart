@@ -11,16 +11,28 @@ import {
 } from "recharts";
 import { DailyMetric, METRIC_COLORS_MAPPING } from "../page";
 
+interface ChartProps {
+  isCompare: boolean;
+  currentWeekData: DailyMetric[];
+  previousWeekData: DailyMetric[];
+  filterOptions: {
+    showPosRevenue: boolean;
+    showEatclubRevenue: boolean;
+    showLabourCosts: boolean;
+  };
+}
+
 export default function Chart({
   isCompare,
   currentWeekData,
   previousWeekData,
-}: {
-  isCompare: boolean;
-  currentWeekData: DailyMetric[];
-  previousWeekData: DailyMetric[];
-}) {
-  const chartData = generateChartData(currentWeekData, previousWeekData);
+  filterOptions,
+}: ChartProps) {
+  const chartData = generateChartData(
+    currentWeekData,
+    previousWeekData,
+    filterOptions
+  );
   return (
     <div className="w-full h-96">
       <ResponsiveContainer>
@@ -36,19 +48,16 @@ export default function Chart({
             strokeDasharray={"3 3"}
             stroke="#808081"
           />
-          <Tooltip
-            formatter={(value) => [
-              `${((value as number) / 1000).toFixed(1)}k`,
-              "",
-            ]}
-            labelFormatter={(label) => `Date: ${label}`}
-          />
+          <Tooltip />
 
           <Bar
             dataKey="pos_revenue"
             stackId="revenue"
             fill={METRIC_COLORS_MAPPING.pos_revenue}
-            radius={[0, 0, 0, 0]}
+            radius={
+              // if eatclub enable => rounded
+              filterOptions.showEatclubRevenue ? [0, 0, 0, 0] : [6, 6, 0, 0]
+            }
           />
           <Bar
             dataKey="eatclub_revenue"
@@ -69,7 +78,10 @@ export default function Chart({
                 dataKey="prev_pos_revenue"
                 stackId="prev_revenue"
                 fill={METRIC_COLORS_MAPPING.prev_pos_revenue}
-                radius={[0, 0, 0, 0]}
+                radius={
+                  // if eatclub enable => rounded
+                  filterOptions.showEatclubRevenue ? [0, 0, 0, 0] : [6, 6, 0, 0]
+                }
               />
               <Bar
                 dataKey="prev_eatclub_revenue"
