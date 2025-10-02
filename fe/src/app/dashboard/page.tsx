@@ -12,6 +12,7 @@ import {
   calculatePercentageChange,
   calculateTotals,
 } from "@/utils/calculateMetricData";
+import LegendLabel from "./_components/LegendLabel";
 
 export interface DailyMetric {
   _id: string;
@@ -107,8 +108,16 @@ export default function Home() {
     );
   }
 
-  const thisWeekTotals = calculateTotals(weeklyData.thisWeek.data);
-  const prevWeekTotals = calculateTotals(weeklyData.prevWeek.data);
+  const thisWeekTotals = calculateTotals(weeklyData.thisWeek.data, {
+    showPosRevenue,
+    showEatclubRevenue,
+    showLabourCosts,
+  });
+  const prevWeekTotals = calculateTotals(weeklyData.prevWeek.data, {
+    showPosRevenue,
+    showEatclubRevenue,
+    showLabourCosts,
+  });
 
   const revenueChange = calculatePercentageChange(
     thisWeekTotals.totalRevenue,
@@ -186,56 +195,47 @@ export default function Home() {
 
         {/* Legend */}
         <div className="mt-6 flex flex-wrap gap-4 justify-center text-sm">
-          <div className="flex items-center gap-2">
-            <div
-              className="w-4 h-4 bg-black rounded"
-              style={{ backgroundColor: METRIC_COLORS_MAPPING.pos_revenue }}
-            ></div>
-            <span className="text-gray-700">POS Revenue (Current)</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div
-              className="w-4 h-4 bg-blue-600 rounded"
-              style={{ backgroundColor: METRIC_COLORS_MAPPING.eatclub_revenue }}
-            ></div>
-            <span className="text-gray-700">Eatclub Revenue (Current)</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div
-              className="w-4 h-4 bg-orange-500 rounded"
-              style={{ backgroundColor: METRIC_COLORS_MAPPING.labour_cost }}
-            ></div>
-            <span className="text-gray-700">Labour Costs (Current)</span>
-          </div>
+          {showPosRevenue && (
+            <LegendLabel
+              label="POS Revenue (Current)"
+              color={METRIC_COLORS_MAPPING.pos_revenue}
+            />
+          )}
+
+          {showEatclubRevenue && (
+            <LegendLabel
+              label="Eatclub Revenue (Current)"
+              color={METRIC_COLORS_MAPPING.eatclub_revenue}
+            />
+          )}
+
+          {showLabourCosts && (
+            <LegendLabel
+              label="Labour Costs (Current)"
+              color={METRIC_COLORS_MAPPING.labour_cost}
+            />
+          )}
+
           {compareMode && (
             <>
-              <div className="flex items-center gap-2">
-                <div
-                  className="w-4 h-4 bg-gray-400 rounded"
-                  style={{
-                    backgroundColor: METRIC_COLORS_MAPPING.prev_pos_revenue,
-                  }}
-                ></div>
-                <span className="text-gray-700">Direct Revenue (Previous)</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div
-                  className="w-4 h-4 bg-blue-300 rounded"
-                  style={{
-                    backgroundColor: METRIC_COLORS_MAPPING.prev_eatclub_revenue,
-                  }}
-                ></div>
-                <span className="text-gray-700">Total Revenue (Previous)</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div
-                  className="w-4 h-4 bg-orange-300 rounded"
-                  style={{
-                    backgroundColor: METRIC_COLORS_MAPPING.prev_labour_cost,
-                  }}
-                ></div>
-                <span className="text-gray-700">Labour Costs (Previous)</span>
-              </div>
+              {showPosRevenue && (
+                <LegendLabel
+                  label="Total Revenue (Previous)"
+                  color={METRIC_COLORS_MAPPING.prev_pos_revenue}
+                />
+              )}
+              {showEatclubRevenue && (
+                <LegendLabel
+                  label="Eatclub Revenue (Previous)"
+                  color={METRIC_COLORS_MAPPING.prev_eatclub_revenue}
+                />
+              )}
+              {showLabourCosts && (
+                <LegendLabel
+                  label="Labour Costs (Previous)"
+                  color={METRIC_COLORS_MAPPING.prev_labour_cost}
+                />
+              )}
             </>
           )}
         </div>

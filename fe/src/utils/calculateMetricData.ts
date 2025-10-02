@@ -8,12 +8,26 @@ export const formatCurrency = (amount: number) => {
   }).format(amount);
 };
 
-export const calculateTotals = (data: DailyMetric[]) => {
+export const calculateTotals = (
+  data: DailyMetric[],
+  options?: {
+    showPosRevenue?: boolean;
+    showEatclubRevenue?: boolean;
+    showLabourCosts?: boolean;
+  }
+) => {
+  const {
+    showPosRevenue = true,
+    showEatclubRevenue = true,
+    showLabourCosts = true,
+  } = options || {};
+
   const total = data.reduce(
     (acc, item) => ({
-      pos_revenue: acc.pos_revenue + item.pos_revenue,
-      eatclub_revenue: acc.eatclub_revenue + item.eatclub_revenue,
-      labour_cost: acc.labour_cost + item.labour_cost,
+      pos_revenue: acc.pos_revenue + (showPosRevenue ? item.pos_revenue : 0),
+      eatclub_revenue:
+        acc.eatclub_revenue + (showEatclubRevenue ? item.eatclub_revenue : 0),
+      labour_cost: acc.labour_cost + (showLabourCosts ? item.labour_cost : 0),
     }),
     { pos_revenue: 0, eatclub_revenue: 0, labour_cost: 0 }
   );
