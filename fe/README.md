@@ -24,10 +24,9 @@
 
 ## 📥 Installation
 
-### Step 1: Clone the Repository (if not done already)
+### Step 1: Move to fe part
 
 ```bash
-git clone <your-repository-url>
 cd pj-chart/fe
 ```
 
