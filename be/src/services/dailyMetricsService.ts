@@ -34,7 +34,16 @@ class DailyMetricsService {
       labour_cost,
     });
 
-    return metrics;
+    // Refetch without timestamps
+    const result = await DailyMetrics.findById(metrics._id).select(
+      "-createdAt -updatedAt"
+    );
+
+    if (!result) {
+      throw new AppError("Failed to create metrics", 500);
+    }
+
+    return result;
   }
 
   async getAllMetrics(
@@ -59,7 +68,9 @@ class DailyMetricsService {
       }
     }
 
-    const metrics = await DailyMetrics.find(query).sort({ date: 1 });
+    const metrics = await DailyMetrics.find(query)
+      .select("-createdAt -updatedAt")
+      .sort({ date: 1 });
 
     return metrics;
   }
@@ -69,7 +80,9 @@ class DailyMetricsService {
       throw new AppError("Invalid metrics ID", 400);
     }
 
-    const metrics = await DailyMetrics.findById(id);
+    const metrics = await DailyMetrics.findById(id).select(
+      "-createdAt -updatedAt"
+    );
 
     if (!metrics) {
       throw new AppError("Metrics not found", 404);
@@ -146,7 +159,8 @@ class DailyMetricsService {
     const metrics = await DailyMetrics.findByIdAndUpdate(id, updateData, {
       new: true,
       runValidators: true,
-    });
+    }).select("-createdAt -updatedAt");
+
     if (!metrics) {
       throw new AppError("Metrics not found", 404);
     }

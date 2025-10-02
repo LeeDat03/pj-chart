@@ -23,6 +23,38 @@ class AuthController {
       message: "User logged out successfully",
     });
   });
+
+  getCurrentUser = catchAsync(async (req: Request, res: Response) => {
+    const user = (req as any).user;
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "User not authenticated",
+      });
+    }
+
+    const fullUser = await authService.getUserById(user.id);
+
+    if (!fullUser) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    return res.json({
+      success: true,
+      data: {
+        user: {
+          id: fullUser._id.toString(),
+          name: fullUser.name,
+          email: fullUser.email,
+          role: fullUser.role,
+        },
+      },
+    });
+  });
 }
 
 export default new AuthController();
