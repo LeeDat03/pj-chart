@@ -1,106 +1,114 @@
 # Chart Project - Backend API
 
-## 🔐 Environment Variables
+## 🔧 Prerequisites
 
-Create `.env` file:
+Before you begin, ensure you have the following installed on your Linux/macOS system:
+
+### Required Software
+
+1. **Node.js** (v18 or higher) and npm
+
+   ```bash
+   # Check if installed
+   node --version
+   npm --version
+   ```
+
+   If don't have it already you can install it here https://nodejs.org/en/download
+
+2. **MongoDB**
+
+   ```bash
+   mongod --version
+   ```
+
+   You can download and setup db in here: https://www.mongodb.com/try/download/community
+
+3. **Git**
+
+   ```bash
+   # Check if installed
+   git --version
+   ```
+
+## 📥 Installation
+
+### Step 1: Move to the be part
+
+```bash
+cd pj-chart/be
+```
+
+### Step 2: Install Dependencies
+
+```bash
+npm install
+```
+
+## ⚙️ Environment Configuration
+
+### Create Environment File
+
+Create a `.env` file in the `be` directory:
+
+### Add Environment Variables
+
+Open `.env` and add the following configuration:
 
 ```env
+# Server Configuration
 PORT=3000
 NODE_ENV=development
+
+# Database Configuration
+# replace with your db connection
 MONGODB_URI=mongodb://localhost:27017/pj-chart
 
-# JWT
-JWT_SECRET=your-super-secret-key-change-this
+# JWT Configuration
+JWT_SECRET=your-super-secret-key-change-this-to-something-secure
 JWT_EXPIRE=7d
 JWT_COOKIE_EXPIRE=7
 
-# CORS
-FRONTEND_URL=http://localhost:5173
+# CORS Configuration
+FRONTEND_URL=http://localhost:3000
 ```
 
-## 🚀 Running the Server
+**Important Security Notes:**
 
-### Development
+- Change `JWT_SECRET` to a strong, random string (at least 32 characters)
+- Never commit `.env` file to version control (it's already in `.gitignore`)
+
+## 🚀 Running the Application
+
+### Development Mode (with auto-reload)
 
 ```bash
 npm run dev
 ```
 
-### Production
+This will:
 
-```bash
-npm run build
-npm start
+- Start the server with nodemon
+- Auto-reload on file changes
+- Run on `http://localhost:3000`
+- Connect to MongoDB
+
+You should see:
+
+```
+Server running on port 3000
+Connected DB
 ```
 
-## 📝 API Endpoints Summary
-
-### Authentication (Public)
-
-- `POST /api/v1/auth/register` - Register new user
-- `POST /api/v1/auth/login` - Login
-- `POST /api/v1/auth/logout` - Logout
-- `GET /api/v1/auth/me` - Get current user
-
-### Users (Admin Only)
-
-- `GET /api/v1/users` - Get all users
-- `PATCH /api/v1/users/:id/role` - Update user role
-
-### Charts - Admin Routes (Protected)
-
-- `GET /api/v1/charts` - Get all charts (with unpublished)
-- `POST /api/v1/charts` - Create chart
-- `PUT /api/v1/charts/:id` - Update chart
-- `DELETE /api/v1/charts/:id` - Delete chart
-- `PATCH /api/v1/charts/:id/publish` - Publish/unpublish chart
-
-### Charts - Public Routes (No Auth)
-
-- `GET /api/v1/public/charts` - Get published charts only
-- `GET /api/v1/public/charts/:id` - Get single published chart
-
-## 🧪 Testing
-
-Example: Create admin user and login
+### Verify Server is Running
 
 ```bash
-# Register
-POST http://localhost:3000/api/v1/auth/register
+# Or open in browser
+http://localhost:3000/api/v1/health
+# You should see the API response
 {
-  "name": "Admin User",
-  "email": "admin@example.com",
-  "password": "admin123",
-  "role": "admin"
-}
-
-# Login
-POST http://localhost:3000/api/v1/auth/login
-{
-  "email": "admin@example.com",
-  "password": "admin123"
-}
-# Returns: { token: "jwt-token-here" }
-
-# Create Chart (with token in Authorization header)
-POST http://localhost:3000/api/v1/charts
-Headers: Authorization: Bearer <your-token>
-{
-  "title": "Sales Chart",
-  "type": "bar",
-  "data": {...},
-  "isPublished": true
+  "status": "ok",
+  "uptime": 14.5241196,
+  "timestamp": "2025-10-02T16:20:36.341Z"
 }
 ```
-
-## 🔄 Development Workflow
-
-1. Pick a task from TODO list above
-2. Create necessary files (models, routes, controllers)
-3. Test with Postman/Thunder Client
-4. Move to next task
-5. Update TODO as completed ✅
-
----
-
-**Ready to start? Let's build this step by step! 🎯**

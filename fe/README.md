@@ -1,36 +1,125 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Chart Project - Frontend Application
 
-## Getting Started
+## 🔧 Prerequisites
 
-First, run the development server:
+### Required Software
+
+1. **Node.js** (v18 or higher) and npm
+
+   ```bash
+   # Check if installed
+   node --version
+   npm --version
+   ```
+
+   If don't have it already you can install it here https://nodejs.org/en/download
+
+2. **Backend API Running** (Required)
+
+   The frontend requires the backend API to be running. Please ensure you have:
+
+- Completed the backend setup (see `be/README.md`)
+- Backend API running on `http://localhost:3000`
+- MongoDB running and connected
+
+## 📥 Installation
+
+### Step 1: Clone the Repository (if not done already)
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <your-repository-url>
+cd pj-chart/fe
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Step 2: Install Dependencies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This will install all required packages to run
 
-## Learn More
+**Installation Time:** This may take 2-5 minutes depending on your internet connection.
 
-To learn more about Next.js, take a look at the following resources:
+## ⚙️ Environment Configuration
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Create Environment File
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Create a `.env.local` file in the `fe` directory:
 
-## Deploy on Vercel
+```bash
+# From the fe directory
+touch .env
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Add Environment Variables
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Open `.env.local` and add the following configuration:
+
+THIS MUST BE MATCH WITH YOUR BE CONFIG IN BE (see in BE)
+
+```env
+# API Configuration
+NEXT_PUBLIC_API_URL=http://localhost:3000/api/v1
+
+# JWT Cookie Name (should match backend)
+JWT_COOKIE_NAME=pj-chart-token
+```
+
+## 🚀 Running the Application
+
+### Step 1: Ensure Backend is Running
+
+Before starting the frontend, make sure:
+
+- run backend server
+
+```bash
+# In a separate terminal, from the be directory
+cd ../be
+npm run dev
+
+# You should see:
+# Server running on port 3000
+# Connected DB
+```
+
+### Step 2: Start the Development Server
+
+```bash
+# From the fe directory
+npm run dev
+```
+
+**Expected Output:**
+
+```
+▲ Next.js 15.5.4
+- Local:        http://localhost:3001
+- Turbopack (Experimental): Enabled
+
+✓ Ready in 1.2s
+```
+
+### Step 3: Open in Browser
+
+```bash
+# Open in your default browser
+open http://localhost:3001    # macOS
+xdg-open http://localhost:3001  # Linux
+
+# Or manually navigate to http://localhost:3001
+```
+
+### Verify Installation
+
+When open http://localhost:3001 you will see a Backend Connection Status
+If status is Disconnected => check be server and run again
+
+If status is Connected => Try
+
+1. Click "Dashboard" or "Login"
+2. Navigate to `/auth/login`
+3. Login to create data for your charts
+4. You should be redirected to `/admin/metrics`
+5. After all comeback to /dashboard to see complete chart
