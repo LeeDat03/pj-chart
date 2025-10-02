@@ -38,7 +38,7 @@ class AuthService {
       name,
       email,
       password,
-      role: role || UserRole.USER,
+      role: role || UserRole.ADMIN,
     });
 
     const token = jwtUtil.generateToken({
