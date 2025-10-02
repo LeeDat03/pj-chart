@@ -11,8 +11,7 @@ const app = express();
 
 app.use(
   cors({
-    // TODO: change this
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    origin: process.env.FRONTEND_URL || "http://localhost:3001",
     credentials: true,
   })
 );
